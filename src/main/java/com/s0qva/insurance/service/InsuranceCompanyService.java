@@ -2,6 +2,9 @@ package com.s0qva.insurance.service;
 
 import com.s0qva.insurance.dto.InsuranceCompanyCreateEditDto;
 import com.s0qva.insurance.dto.InsuranceCompanyReadDto;
+import com.s0qva.insurance.exception.InsuranceCompanyCreationException;
+import com.s0qva.insurance.exception.NoSuchInsuranceCompanyException;
+import com.s0qva.insurance.handler.GlobalExceptionHandler;
 import com.s0qva.insurance.mapper.InsuranceCompanyCreateEditMapper;
 import com.s0qva.insurance.mapper.InsuranceCompanyReadMapper;
 import com.s0qva.insurance.repository.InsuranceCompanyRepository;
@@ -39,7 +42,7 @@ public class InsuranceCompanyService {
     public InsuranceCompanyReadDto getById(Long id) {
         return insuranceCompanyRepository.findById(id)
                 .map(insuranceCompanyReadMapper::mapToDto)
-                .orElseThrow(() -> new RuntimeException("There is no insurance company with received id!"));
+                .orElseThrow(() -> new NoSuchInsuranceCompanyException(id));
     }
 
     @Transactional
@@ -48,6 +51,6 @@ public class InsuranceCompanyService {
                 .map(insuranceCompanyCreateEditMapper::mapToEntity)
                 .map(insuranceCompanyRepository::save)
                 .map(insuranceCompanyReadMapper::mapToDto)
-                .orElseThrow(() -> new RuntimeException("Failed to create the insurance company!"));
+                .orElseThrow(InsuranceCompanyCreationException::new);
     }
 }
