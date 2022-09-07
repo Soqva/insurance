@@ -1,6 +1,7 @@
 package com.s0qva.insurance.controller;
 
 import com.s0qva.insurance.dto.InsuranceCompanyCreateEditDto;
+import com.s0qva.insurance.dto.InsuranceCompanyFilter;
 import com.s0qva.insurance.dto.InsuranceCompanyReadDto;
 import com.s0qva.insurance.service.InsuranceCompanyService;
 import com.s0qva.insurance.util.WebResourceLocationUtil;
@@ -17,7 +18,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/insurance-companies")
+@RequestMapping("insurance-companies")
 public class InsuranceCompanyController {
     private final InsuranceCompanyService insuranceCompanyService;
 
@@ -27,8 +28,8 @@ public class InsuranceCompanyController {
     }
 
     @GetMapping
-    public ResponseEntity<List<InsuranceCompanyReadDto>> getAll() {
-        List<InsuranceCompanyReadDto> insuranceCompanyReadDtos = insuranceCompanyService.getAll();
+    public ResponseEntity<List<InsuranceCompanyReadDto>> getAll(InsuranceCompanyFilter filter) {
+        List<InsuranceCompanyReadDto> insuranceCompanyReadDtos = insuranceCompanyService.getAll(filter);
 
         return ResponseEntity.ok(insuranceCompanyReadDtos);
     }
@@ -45,7 +46,6 @@ public class InsuranceCompanyController {
         InsuranceCompanyReadDto insuranceCompanyReadDto = insuranceCompanyService.create(insuranceCompanyDto);
         URI location = WebResourceLocationUtil.buildWebResourceLocation("/{id}", insuranceCompanyReadDto.getId());
 
-        return ResponseEntity.created(location)
-                .build();
+        return ResponseEntity.created(location).build();
     }
 }

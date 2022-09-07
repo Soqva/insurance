@@ -1,6 +1,7 @@
 package com.s0qva.insurance.integration.service;
 
 import com.s0qva.insurance.dto.InsuranceCompanyCreateEditDto;
+import com.s0qva.insurance.dto.InsuranceCompanyFilter;
 import com.s0qva.insurance.dto.InsuranceCompanyReadDto;
 import com.s0qva.insurance.integration.IntegrationTestBase;
 import com.s0qva.insurance.service.InsuranceCompanyService;
@@ -24,7 +25,7 @@ public class InsuranceCompanyServiceIT extends IntegrationTestBase {
 
     @Test
     void isShouldGetAllExistingInsuranceCompaniesAsInsuranceCompanyReadDtoList() {
-        List<InsuranceCompanyReadDto> actualOutput = underTest.getAll();
+        List<InsuranceCompanyReadDto> actualOutput = underTest.getAll(new InsuranceCompanyFilter());
 
         assertAll(() -> {
            assertThat(actualOutput).isNotNull();

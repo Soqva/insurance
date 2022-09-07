@@ -1,10 +1,10 @@
 package com.s0qva.insurance.service;
 
 import com.s0qva.insurance.dto.InsuranceCompanyCreateEditDto;
+import com.s0qva.insurance.dto.InsuranceCompanyFilter;
 import com.s0qva.insurance.dto.InsuranceCompanyReadDto;
 import com.s0qva.insurance.exception.InsuranceCompanyCreationException;
 import com.s0qva.insurance.exception.NoSuchInsuranceCompanyException;
-import com.s0qva.insurance.handler.GlobalExceptionHandler;
 import com.s0qva.insurance.mapper.InsuranceCompanyCreateEditMapper;
 import com.s0qva.insurance.mapper.InsuranceCompanyReadMapper;
 import com.s0qva.insurance.repository.InsuranceCompanyRepository;
@@ -32,8 +32,8 @@ public class InsuranceCompanyService {
         this.insuranceCompanyCreateEditMapper = insuranceCompanyCreateEditMapper;
     }
 
-    public List<InsuranceCompanyReadDto> getAll() {
-        return insuranceCompanyRepository.findAll()
+    public List<InsuranceCompanyReadDto> getAll(InsuranceCompanyFilter filter) {
+        return insuranceCompanyRepository.findAll(filter)
                 .stream()
                 .map(insuranceCompanyReadMapper::mapToDto)
                 .collect(Collectors.toList());
