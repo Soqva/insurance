@@ -18,7 +18,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("insurance-companies")
+@RequestMapping("insurance/api/v1/insurance-companies")
 public class InsuranceCompanyController {
     private final InsuranceCompanyService insuranceCompanyService;
 
