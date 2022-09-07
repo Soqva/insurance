@@ -9,21 +9,23 @@ import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
-@Table(name = "insurance_company")
+@Table(name = "`INSURANCE_COMPANY`")
 public class InsuranceCompany {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "`ID`")
     private Long id;
 
-    @Column(name = "taxpayer_identification_number")
+    @Column(name = "`TAXPAYER_IDENTIFICATION_NUMBER`")
     private String taxpayerIdentificationNumber;
 
-    @Column(name = "primary_state_registration_number")
+    @Column(name = "`PRIMARY_STATE_REGISTRATION_NUMBER`")
     private String primaryStateRegistrationNumber;
 
-    @Column(name = "full_name")
+    @Column(name = "`FULL_NAME`")
     private String fullName;
 
+    @Column(name = "`ADDRESS`")
     private String address;
 
     public InsuranceCompany(String taxpayerIdentificationNumber,
