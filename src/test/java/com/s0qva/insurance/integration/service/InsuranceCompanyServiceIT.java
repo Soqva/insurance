@@ -26,7 +26,7 @@ public class InsuranceCompanyServiceIT extends IntegrationTestBase {
 
         assertAll(() -> {
            assertThat(actualOutput).isNotNull();
-           assertThat(actualOutput.size()).isEqualTo(AMOUNT_OF_INSURANCE_COMPANIES);
+           assertThat(actualOutput).hasSize(AMOUNT_OF_INSURANCE_COMPANIES);
         });
     }
 
