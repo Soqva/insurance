@@ -2,6 +2,7 @@ package com.s0qva.insurance.util;
 
 import com.s0qva.insurance.domain.InsuranceCompany;
 import com.s0qva.insurance.dto.InsuranceCompanyFilter;
+import lombok.experimental.UtilityClass;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -11,12 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public final class InsuranceCompanyCriteriaBuilder {
+@UtilityClass
+public class InsuranceCompanyCriteriaBuilder {
 
-    private InsuranceCompanyCriteriaBuilder() {
-    }
-
-    public static CriteriaQuery<InsuranceCompany> buildQueryByInsuranceCompanyFilter(CriteriaBuilder builder, InsuranceCompanyFilter filter) {
+    public CriteriaQuery<InsuranceCompany> buildQueryByInsuranceCompanyFilter(CriteriaBuilder builder, InsuranceCompanyFilter filter) {
         CriteriaQuery<InsuranceCompany> query = builder.createQuery(InsuranceCompany.class);
         Root<InsuranceCompany> insuranceCompany = query.from(InsuranceCompany.class);
         List<Predicate> predicates = new ArrayList<>();

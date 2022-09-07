@@ -5,7 +5,7 @@ import com.s0qva.insurance.dto.InsuranceCompanyFilter;
 import com.s0qva.insurance.dto.InsuranceCompanyReadDto;
 import com.s0qva.insurance.service.InsuranceCompanyService;
 import com.s0qva.insurance.util.WebResourceLocationUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,13 +19,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("insurance/api/v1/insurance-companies")
+@RequiredArgsConstructor
 public class InsuranceCompanyController {
     private final InsuranceCompanyService insuranceCompanyService;
-
-    @Autowired
-    public InsuranceCompanyController(InsuranceCompanyService insuranceCompanyService) {
-        this.insuranceCompanyService = insuranceCompanyService;
-    }
 
     @GetMapping
     public ResponseEntity<List<InsuranceCompanyReadDto>> getAll(InsuranceCompanyFilter filter) {

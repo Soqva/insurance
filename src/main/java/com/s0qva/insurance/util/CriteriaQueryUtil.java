@@ -1,11 +1,11 @@
 package com.s0qva.insurance.util;
 
-public final class CriteriaQueryUtil {
+import lombok.experimental.UtilityClass;
 
-    private CriteriaQueryUtil() {
-    }
+@UtilityClass
+public class CriteriaQueryUtil {
 
-    public static String formatAsPatternMatching(String attribute) {
+    public String formatAsPatternMatching(String attribute) {
         return "%" + attribute + "%";
     }
 }

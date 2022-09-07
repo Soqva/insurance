@@ -5,27 +5,24 @@ import com.s0qva.insurance.dto.InsuranceCompanyFilter;
 import com.s0qva.insurance.dto.InsuranceCompanyReadDto;
 import com.s0qva.insurance.integration.IntegrationTestBase;
 import com.s0qva.insurance.service.InsuranceCompanyService;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+@RequiredArgsConstructor
 public class InsuranceCompanyServiceIT extends IntegrationTestBase {
     private static final Long EXAMPLE_TEST_INSURANCE_COMPANY_ID = 1L;
     private static final int AMOUNT_OF_INSURANCE_COMPANIES = 3;
     private final InsuranceCompanyService underTest;
 
-    @Autowired
-    public InsuranceCompanyServiceIT(InsuranceCompanyService underTest) {
-        this.underTest = underTest;
-    }
-
     @Test
     void isShouldGetAllExistingInsuranceCompaniesAsInsuranceCompanyReadDtoList() {
-        List<InsuranceCompanyReadDto> actualOutput = underTest.getAll(new InsuranceCompanyFilter());
+        InsuranceCompanyFilter emptyFilter = InsuranceCompanyFilter.builder().build();
+        List<InsuranceCompanyReadDto> actualOutput = underTest.getAll(emptyFilter);
 
         assertAll(() -> {
            assertThat(actualOutput).isNotNull();

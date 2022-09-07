@@ -8,7 +8,7 @@ import com.s0qva.insurance.exception.NoSuchInsuranceCompanyException;
 import com.s0qva.insurance.mapper.InsuranceCompanyCreateEditMapper;
 import com.s0qva.insurance.mapper.InsuranceCompanyReadMapper;
 import com.s0qva.insurance.repository.InsuranceCompanyRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,19 +18,11 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class InsuranceCompanyService {
     private final InsuranceCompanyRepository insuranceCompanyRepository;
     private final InsuranceCompanyReadMapper insuranceCompanyReadMapper;
     private final InsuranceCompanyCreateEditMapper insuranceCompanyCreateEditMapper;
-
-    @Autowired
-    public InsuranceCompanyService(InsuranceCompanyRepository insuranceCompanyRepository,
-                                   InsuranceCompanyReadMapper insuranceCompanyReadMapper,
-                                   InsuranceCompanyCreateEditMapper insuranceCompanyCreateEditMapper) {
-        this.insuranceCompanyRepository = insuranceCompanyRepository;
-        this.insuranceCompanyReadMapper = insuranceCompanyReadMapper;
-        this.insuranceCompanyCreateEditMapper = insuranceCompanyCreateEditMapper;
-    }
 
     public List<InsuranceCompanyReadDto> getAll(InsuranceCompanyFilter filter) {
         return insuranceCompanyRepository.findAll(filter)

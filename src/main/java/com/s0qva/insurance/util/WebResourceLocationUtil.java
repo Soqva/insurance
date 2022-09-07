@@ -1,15 +1,14 @@
 package com.s0qva.insurance.util;
 
+import lombok.experimental.UtilityClass;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 
-public final class WebResourceLocationUtil {
+@UtilityClass
+public class WebResourceLocationUtil {
 
-    private WebResourceLocationUtil() {
-    }
-
-    public static URI buildWebResourceLocation(String path, Object resource) {
+    public URI buildWebResourceLocation(String path, Object resource) {
         return ServletUriComponentsBuilder.fromCurrentRequest()
                 .path(path)
                 .buildAndExpand(resource)

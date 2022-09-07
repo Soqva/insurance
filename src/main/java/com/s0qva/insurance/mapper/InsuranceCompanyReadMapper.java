@@ -8,12 +8,12 @@ import org.springframework.stereotype.Component;
 public class InsuranceCompanyReadMapper {
 
     public InsuranceCompanyReadDto mapToDto(InsuranceCompany insuranceCompany) {
-        return new InsuranceCompanyReadDto(
-                insuranceCompany.getId(),
-                insuranceCompany.getTaxpayerIdentificationNumber(),
-                insuranceCompany.getPrimaryStateRegistrationNumber(),
-                insuranceCompany.getFullName(),
-                insuranceCompany.getAddress()
-        );
+        return InsuranceCompanyReadDto.builder()
+                .id(insuranceCompany.getId())
+                .taxpayerIdentificationNumber(insuranceCompany.getTaxpayerIdentificationNumber())
+                .primaryStateRegistrationNumber(insuranceCompany.getPrimaryStateRegistrationNumber())
+                .fullName(insuranceCompany.getFullName())
+                .address(insuranceCompany.getAddress())
+                .build();
     }
 }

@@ -4,60 +4,54 @@ import com.s0qva.insurance.domain.InsuranceCompany;
 import com.s0qva.insurance.dto.InsuranceCompanyCreateEditDto;
 import com.s0qva.insurance.integration.IntegrationTestBase;
 import com.s0qva.insurance.mapper.InsuranceCompanyCreateEditMapper;
-import com.s0qva.insurance.repository.InsuranceCompanyRepository;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+@RequiredArgsConstructor
 public class InsuranceCompanyCreateEditMapperIT extends IntegrationTestBase {
-    private static final Long EXAMPLE_TEST_INSURANCE_COMPANY_ID = 1L;
-    private static final InsuranceCompanyCreateEditDto DEFAULT_TEST_DTO = new InsuranceCompanyCreateEditDto(
-            "111",
-            "111",
-            "Example full name",
-            "Example address"
-    );
+    private static final InsuranceCompany DEFAULT_TEST_INSURANCE_COMPANY = InsuranceCompany.builder()
+            .id(1L)
+            .taxpayerIdentificationNumber("111")
+            .primaryStateRegistrationNumber("222")
+            .fullName("Example Corporation")
+            .address("Example Corporation Address")
+            .build();
+    private static final InsuranceCompanyCreateEditDto DEFAULT_TEST_DTO = InsuranceCompanyCreateEditDto.builder()
+            .taxpayerIdentificationNumber("1110111")
+            .primaryStateRegistrationNumber("2220222")
+            .fullName("Custom Corporation full name")
+            .address("Custom Corporation address")
+            .build();
     private final InsuranceCompanyCreateEditMapper underTest;
-    private final InsuranceCompanyRepository insuranceCompanyRepository;
-
-    @Autowired
-    public InsuranceCompanyCreateEditMapperIT(InsuranceCompanyCreateEditMapper underTest,
-                                              InsuranceCompanyRepository insuranceCompanyRepository) {
-        this.underTest = underTest;
-        this.insuranceCompanyRepository = insuranceCompanyRepository;
-    }
 
     @Test
     void itShouldMapInsuranceCompanyCreateEditDtoToInsuranceCompany() {
-        InsuranceCompanyCreateEditDto insuranceCompanyDto = DEFAULT_TEST_DTO;
-        InsuranceCompany actualOutput = underTest.mapToEntity(insuranceCompanyDto);
+        InsuranceCompany actualOutput = underTest.mapToEntity(DEFAULT_TEST_DTO);
 
         assertAll(() -> {
             assertThat(actualOutput).isNotNull();
             assertThat(actualOutput.getId()).isNull();
-            assertThat(actualOutput.getTaxpayerIdentificationNumber()).isEqualTo(insuranceCompanyDto.getTaxpayerIdentificationNumber());
-            assertThat(actualOutput.getPrimaryStateRegistrationNumber()).isEqualTo(insuranceCompanyDto.getPrimaryStateRegistrationNumber());
-            assertThat(actualOutput.getFullName()).isEqualTo(insuranceCompanyDto.getFullName());
-            assertThat(actualOutput.getAddress()).isEqualTo(insuranceCompanyDto.getAddress());
+            assertThat(actualOutput.getTaxpayerIdentificationNumber()).isEqualTo(DEFAULT_TEST_DTO.getTaxpayerIdentificationNumber());
+            assertThat(actualOutput.getPrimaryStateRegistrationNumber()).isEqualTo(DEFAULT_TEST_DTO.getPrimaryStateRegistrationNumber());
+            assertThat(actualOutput.getFullName()).isEqualTo(DEFAULT_TEST_DTO.getFullName());
+            assertThat(actualOutput.getAddress()).isEqualTo(DEFAULT_TEST_DTO.getAddress());
         });
     }
 
     @Test
     void isShouldEditExistingInsuranceCompanyAccordingToReceivedDto() {
-        InsuranceCompany insuranceCompany = insuranceCompanyRepository.findById(EXAMPLE_TEST_INSURANCE_COMPANY_ID)
-                .orElseGet(InsuranceCompany::new);
-        InsuranceCompanyCreateEditDto insuranceCompanyDto = DEFAULT_TEST_DTO;
-        InsuranceCompany actualOutput = underTest.editEntity(insuranceCompany, insuranceCompanyDto);
+        InsuranceCompany actualOutput = underTest.editEntity(DEFAULT_TEST_INSURANCE_COMPANY, DEFAULT_TEST_DTO);
 
         assertAll(() -> {
             assertThat(actualOutput).isNotNull();
-            assertThat(actualOutput.getId()).isEqualTo(EXAMPLE_TEST_INSURANCE_COMPANY_ID);
-            assertThat(actualOutput.getTaxpayerIdentificationNumber()).isEqualTo(insuranceCompanyDto.getTaxpayerIdentificationNumber());
-            assertThat(actualOutput.getPrimaryStateRegistrationNumber()).isEqualTo(insuranceCompanyDto.getPrimaryStateRegistrationNumber());
-            assertThat(actualOutput.getFullName()).isEqualTo(insuranceCompanyDto.getFullName());
-            assertThat(actualOutput.getAddress()).isEqualTo(insuranceCompanyDto.getAddress());
+            assertThat(actualOutput.getId()).isEqualTo(DEFAULT_TEST_INSURANCE_COMPANY.getId());
+            assertThat(actualOutput.getTaxpayerIdentificationNumber()).isEqualTo(DEFAULT_TEST_DTO.getTaxpayerIdentificationNumber());
+            assertThat(actualOutput.getPrimaryStateRegistrationNumber()).isEqualTo(DEFAULT_TEST_DTO.getPrimaryStateRegistrationNumber());
+            assertThat(actualOutput.getFullName()).isEqualTo(DEFAULT_TEST_DTO.getFullName());
+            assertThat(actualOutput.getAddress()).isEqualTo(DEFAULT_TEST_DTO.getAddress());
         });
     }
 }
