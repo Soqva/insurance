@@ -2,10 +2,14 @@ package com.s0qva.insurance.mapper;
 
 import com.s0qva.insurance.domain.InsuranceCompany;
 import com.s0qva.insurance.dto.InsuranceCompanyCreateEditDto;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class InsuranceCompanyCreateEditMapper {
+    private final ModelMapper modelMapper;
 
     public InsuranceCompany mapToEntity(InsuranceCompanyCreateEditDto insuranceCompanyDto) {
         InsuranceCompany insuranceCompany = new InsuranceCompany();
@@ -21,9 +25,6 @@ public class InsuranceCompanyCreateEditMapper {
     }
 
     private void edit(InsuranceCompany insuranceCompany, InsuranceCompanyCreateEditDto insuranceCompanyDto) {
-        insuranceCompany.setTaxpayerIdentificationNumber(insuranceCompanyDto.getTaxpayerIdentificationNumber());
-        insuranceCompany.setPrimaryStateRegistrationNumber(insuranceCompanyDto.getPrimaryStateRegistrationNumber());
-        insuranceCompany.setFullName(insuranceCompanyDto.getFullName());
-        insuranceCompany.setAddress(insuranceCompanyDto.getAddress());
+        modelMapper.map(insuranceCompanyDto, insuranceCompany);
     }
 }

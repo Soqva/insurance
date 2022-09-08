@@ -3,14 +3,16 @@ package com.s0qva.insurance.dto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class InsuranceCompanyReadDto {
-    private final Long id;
-    private final String taxpayerIdentificationNumber;
-    private final String primaryStateRegistrationNumber;
-    private final String fullName;
-    private final String address;
+    private Long id;
+    private String taxpayerIdentificationNumber;
+    private String primaryStateRegistrationNumber;
+    private String fullName;
+    private String address;
 }
