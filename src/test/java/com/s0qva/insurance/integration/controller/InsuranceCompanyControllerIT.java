@@ -189,8 +189,8 @@ public class InsuranceCompanyControllerIT extends IntegrationTestBase {
     void itShouldCreateInsuranceCompanyAndGetCreatedInsuranceCompanyLocation() throws Exception {
         Long createdInsuranceCompanyId = 4L;
         InsuranceCompanyCreateEditDto insuranceCompanyDto = InsuranceCompanyCreateEditDto.builder()
-                .taxpayerIdentificationNumber("101")
-                .primaryStateRegistrationNumber("1001")
+                .taxpayerIdentificationNumber("1000000000")
+                .primaryStateRegistrationNumber("1000000000000")
                 .fullName("new insurance company")
                 .address("new address")
                 .build();
