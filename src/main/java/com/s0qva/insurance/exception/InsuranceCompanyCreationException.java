@@ -1,7 +1,6 @@
 package com.s0qva.insurance.exception;
 
 public class InsuranceCompanyCreationException extends EntityCreationException {
-
     public static final String DEFAULT_EXCEPTION_MESSAGE_PLACEHOLDER = "Failed to create the insurance company";
 
     public InsuranceCompanyCreationException() {

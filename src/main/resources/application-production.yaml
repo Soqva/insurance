@@ -1,0 +1,2 @@
+production-configuration-file:
+  path: src/main/resources/production/configuration/config.json
