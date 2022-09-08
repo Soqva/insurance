@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class InsuranceCompanyController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody InsuranceCompanyCreateEditDto insuranceCompanyDto) {
+    public ResponseEntity<?> create(@Valid @RequestBody InsuranceCompanyCreateEditDto insuranceCompanyDto) {
         InsuranceCompanyReadDto insuranceCompanyReadDto = insuranceCompanyService.create(insuranceCompanyDto);
         URI location = WebResourceLocationUtil.buildWebResourceLocation("/{id}", insuranceCompanyReadDto.getId());
 
