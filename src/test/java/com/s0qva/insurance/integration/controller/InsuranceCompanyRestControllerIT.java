@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureMockMvc
 @RequiredArgsConstructor
-public class InsuranceCompanyControllerIT extends IntegrationTestBase {
+public class InsuranceCompanyRestControllerIT extends IntegrationTestBase {
     private static final String CONTROLLER_REQUEST_MAPPING = "/insurance/api/v1/insurance-companies";
     private static final String CONTROLLER_REQUEST_MAPPING_WITH_ID = "/insurance/api/v1/insurance-companies/{id}";
     private static final int AMOUNT_OF_INSURANCE_COMPANIES = 3;

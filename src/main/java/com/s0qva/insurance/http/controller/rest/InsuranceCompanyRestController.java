@@ -1,4 +1,4 @@
-package com.s0qva.insurance.controller;
+package com.s0qva.insurance.http.controller.rest;
 
 import com.s0qva.insurance.dto.InsuranceCompanyCreateEditDto;
 import com.s0qva.insurance.dto.InsuranceCompanyFilter;
@@ -21,7 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("insurance/api/v1/insurance-companies")
 @RequiredArgsConstructor
-public class InsuranceCompanyController {
+public class InsuranceCompanyRestController {
     private final InsuranceCompanyService insuranceCompanyService;
 
     @GetMapping
