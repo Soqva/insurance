@@ -1,9 +1,9 @@
 package com.s0qva.insurance.loader;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.s0qva.insurance.property.ProductionConfigurationPropertyHolder;
 import com.s0qva.insurance.exception.FailedToLoadProductionConfigurationFileException;
 import com.s0qva.insurance.exception.ProductionConfigurationFileNotFoundException;
+import com.s0qva.insurance.property.ProductionConfigurationPropertyHolder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

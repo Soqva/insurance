@@ -1,12 +1,15 @@
 package com.s0qva.insurance.jqpl.operation;
 
-import com.s0qva.insurance.constant.JpqlOperationConstant;
+import com.s0qva.insurance.constant.JpqlConstant;
+import com.s0qva.insurance.dto.JpqlQuery;
+import com.s0qva.insurance.util.JpqlOperationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
-@Component(JpqlOperationConstant.DELETE_JPQL_OPERATION_NAME)
+@Component(JpqlConstant.DELETE_JPQL_OPERATION_NAME)
 public class DeleteJpqlOperation extends AbstractJpqlOperation<Integer> {
 
     @Autowired
@@ -15,7 +18,14 @@ public class DeleteJpqlOperation extends AbstractJpqlOperation<Integer> {
     }
 
     @Override
-    public Integer execute(String query) {
-        return entityManager.createQuery(query).executeUpdate();
+    public Integer executeQuery(JpqlQuery query) {
+        String jpqlQuery = query.getQuery();
+        String selectJpqlQuery = JpqlOperationUtil.convertToSelectJpqlQuery(jpqlQuery);
+        List<?> entitiesToDelete = entityManager.createQuery(selectJpqlQuery).getResultList();
+
+        for (Object entityToDelete : entitiesToDelete) {
+            entityManager.remove(entityToDelete);
+        }
+        return entitiesToDelete.size();
     }
 }

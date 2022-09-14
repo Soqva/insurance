@@ -1,5 +1,6 @@
 package com.s0qva.insurance.http.controller.rest;
 
+import com.s0qva.insurance.dto.JpqlQuery;
 import com.s0qva.insurance.service.JpqlService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ public class JpqlRestController {
     private final JpqlService jpqlService;
 
     @PostMapping
-    public ResponseEntity<Object> executeQuery(@RequestBody String query) {
+    public ResponseEntity<Object> executeQuery(@RequestBody JpqlQuery query) {
         Object executionResult = jpqlService.executeQuery(query);
 
         return ResponseEntity.ok(executionResult);

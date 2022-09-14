@@ -1,22 +1,22 @@
 package com.s0qva.insurance.service;
 
-import com.s0qva.insurance.resolver.JpqlOperationResolver;
+import com.s0qva.insurance.dto.JpqlQuery;
+import com.s0qva.insurance.repository.JpqlRepository;
+import com.s0qva.insurance.resolver.JpqlRepositoryResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class JpqlService {
-    private final JpqlOperationResolver jpqlOperationResolver;
+    private final JpqlRepositoryResolver jpqlRepositoryResolver;
 
-    public Object executeQuery(String query) {
-        return Optional.ofNullable(query)
-                .map(jpqlOperationResolver::resolve)
-                .map(jpqlOperation -> jpqlOperation.execute(query))
-                .orElseThrow(() -> new RuntimeException("Failed to execute the query"));
+    public Object executeQuery(JpqlQuery query) {
+        String jpqlRepositoryName = query.getRepositoryName();
+        JpqlRepository repository = jpqlRepositoryResolver.resolve(jpqlRepositoryName);
+
+        return repository.executeQuery(query);
     }
 }
