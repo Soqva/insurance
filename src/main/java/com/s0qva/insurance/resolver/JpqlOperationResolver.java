@@ -3,6 +3,7 @@ package com.s0qva.insurance.resolver;
 import com.s0qva.insurance.jqpl.operation.JpqlOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.Map;
 
@@ -12,8 +13,8 @@ public class JpqlOperationResolver {
     private final Map<String, JpqlOperation<?>> jpqlOperations;
 
     public JpqlOperation<?> resolve(String jpqlOperationName) {
-        String caseInsensitiveOperationName = jpqlOperationName.toLowerCase();
+        String decapitalizedOperationName = StringUtils.uncapitalize(jpqlOperationName);
 
-        return jpqlOperations.get(caseInsensitiveOperationName);
+        return jpqlOperations.get(decapitalizedOperationName);
     }
 }

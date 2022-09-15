@@ -12,5 +12,4 @@ import lombok.NoArgsConstructor;
 public class JpqlQuery {
     private String operationName;
     private String query;
-    private String repositoryName;
 }

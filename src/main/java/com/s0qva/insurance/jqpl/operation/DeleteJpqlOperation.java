@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-@Component(JpqlConstant.DELETE_JPQL_OPERATION_NAME)
+@Component(JpqlConstant.DELETE_OPERATION_NAME)
 public class DeleteJpqlOperation extends AbstractJpqlOperation<Integer> {
 
     @Autowired

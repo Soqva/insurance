@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-@Component(JpqlConstant.SELECT_JPQL_OPERATION_NAME)
+@Component(JpqlConstant.SELECT_OPERATION_NAME)
 public class SelectJpqlOperation extends AbstractJpqlOperation<List<?>> {
 
     @Autowired

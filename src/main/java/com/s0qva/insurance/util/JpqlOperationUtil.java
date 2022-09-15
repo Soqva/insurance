@@ -1,70 +1,96 @@
 package com.s0qva.insurance.util;
 
-import liquibase.repackaged.org.apache.commons.lang3.StringUtils;
+import com.s0qva.insurance.constant.JpqlConstant;
+import com.s0qva.insurance.exception.EntityAliasNotFoundException;
+import com.s0qva.insurance.exception.InvalidJpqlQueryException;
+import com.s0qva.insurance.exception.SetClauseNotFoundException;
 import lombok.experimental.UtilityClass;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @UtilityClass
 public class JpqlOperationUtil {
-    private static final String UPDATE_DELETE_JPQL_OPERATION_REGEX = "(update|delete from)";
-    private static final String UPDATE_SET_WITH_WHERE_REGEX = "(set.+).*where";
-    private static final String UPDATE_SET_REGEX = "(set.+)";
-    private static final String UPDATE_SET_ALIAS_REGEX = ".*\\.";
-    private static final Map<String, String> REGULAR_EXPRESSIONS_WITH_REPLACEMENT = Map.of(
-            UPDATE_DELETE_JPQL_OPERATION_REGEX, "select i from",
-            UPDATE_SET_WITH_WHERE_REGEX, StringUtils.EMPTY,
-            UPDATE_SET_REGEX, StringUtils.EMPTY
-    );
+    private static final String UPDATE_DELETE_JPQL_OPERATION_REGEX = "(?:update|delete from)\\s" +
+            "(?<entity>\\w+)\\s?" +
+            "(?<alias>\\w)?";
+    private static final String ENTITY_GROUP_NAME = "entity";
+    private static final String ALIAS_GROUP_NAME = "alias";
 
     public String convertToSelectJpqlQuery(String jpqlQuery) {
-        String selectJpqlQuery = jpqlQuery;
+        String entity = extractEntity(jpqlQuery);
+        String entityAlias = extractEntityAlias(jpqlQuery);
+        String whereClause = StringUtils.EMPTY;
 
-        for (Map.Entry<String, String> regexWithReplacement : REGULAR_EXPRESSIONS_WITH_REPLACEMENT.entrySet()) {
-            String regex = regexWithReplacement.getKey();
-            String replacement = regexWithReplacement.getValue();
-
-            if (regex.contains("set") && !regex.contains("where") && selectJpqlQuery.contains("where")) {
-                continue;
-            }
-            Pattern compiledRegexPattern = Pattern.compile(regex);
-            Matcher matcher = compiledRegexPattern.matcher(selectJpqlQuery);
-
-            while (matcher.find()) {
-                String targetToReplace = matcher.group(1);
-                selectJpqlQuery = selectJpqlQuery.replace(targetToReplace, replacement);
-            }
+        if (Objects.isNull(entityAlias)) {
+            throw new EntityAliasNotFoundException();
         }
-        return selectJpqlQuery;
+        int whereClauseIndex = jpqlQuery.indexOf(JpqlConstant.WHERE_CLAUSE_NAME);
+
+        if (whereClauseIndex != StringUtils.INDEX_NOT_FOUND) {
+            whereClause = jpqlQuery.substring(whereClauseIndex);
+        }
+        return JpqlConstant.SELECT_OPERATION_NAME
+                + StringUtils.SPACE
+                + entityAlias
+                + " from "
+                + entity
+                + StringUtils.SPACE
+                + entityAlias
+                + StringUtils.SPACE
+                + whereClause;
     }
 
     public Map<String, String> extractChanges(String jpqlQuery) {
         Map<String, String> changes = new HashMap<>();
-        Pattern compiledRegexPattern;
+        String entityAlias = extractEntityAlias(jpqlQuery);
 
-        if (jpqlQuery.contains("where")) {
-            compiledRegexPattern = Pattern.compile(UPDATE_SET_WITH_WHERE_REGEX);
-        } else {
-            compiledRegexPattern = Pattern.compile(UPDATE_SET_REGEX);
+        if (Objects.isNull(entityAlias)) {
+            throw new EntityAliasNotFoundException();
         }
-        Matcher matcher = compiledRegexPattern.matcher(jpqlQuery);
+        int setClauseIndex = jpqlQuery.indexOf(JpqlConstant.SET_CLAUSE_NAME);
 
-        while (matcher.find()) {
-            String changesGroup = matcher.group(1);
-            String[] splitChangesGroup = changesGroup.split(",");
+        if (setClauseIndex == StringUtils.INDEX_NOT_FOUND) {
+            throw new SetClauseNotFoundException();
+        }
+        String setClause;
+        int whereClauseIndex = jpqlQuery.indexOf(JpqlConstant.WHERE_CLAUSE_NAME);
 
-            for (String unformattedChange : splitChangesGroup) {
-                String formattedChange = unformattedChange.replaceFirst(UPDATE_SET_ALIAS_REGEX, StringUtils.EMPTY);
-                String[] splitFormattedChange = formattedChange.trim().split("=");
-                String entityField = splitFormattedChange[0];
-                String entityFieldValue = splitFormattedChange[1].replace("'", StringUtils.EMPTY);
+        if (whereClauseIndex != StringUtils.INDEX_NOT_FOUND) {
+            setClause = jpqlQuery.substring(setClauseIndex + JpqlConstant.SET_CLAUSE_NAME.length() + 1, whereClauseIndex - 1);
+        } else {
+            setClause = jpqlQuery.substring(setClauseIndex + JpqlConstant.SET_CLAUSE_NAME.length() + 1);
+        }
+        String setClauseWithoutEntityAlias = setClause.replaceAll(entityAlias + "\\.", StringUtils.EMPTY);
+        String[] splitChanges = setClauseWithoutEntityAlias.split(",");
 
-                changes.put(entityField, entityFieldValue);
-            }
+        for (String change : splitChanges) {
+            String[] splitChange = change.split("=");
+            String entityField = splitChange[0].trim();
+            String entityFieldValue = splitChange[1].trim().replaceAll("'", StringUtils.EMPTY);
+
+            changes.put(entityField, entityFieldValue);
         }
         return changes;
+    }
+
+    public String extractEntity(String jpqlQuery) {
+        return extract(jpqlQuery, UPDATE_DELETE_JPQL_OPERATION_REGEX, ENTITY_GROUP_NAME);
+    }
+
+    public String extractEntityAlias(String jpqlQuery) {
+        return extract(jpqlQuery, UPDATE_DELETE_JPQL_OPERATION_REGEX, ALIAS_GROUP_NAME);
+    }
+
+    private String extract(String jpqlQuery, String regex, String groupName) {
+        Matcher jpqlQueryMatcher = RegexUtil.createMatcher(regex, jpqlQuery);
+
+        if (!jpqlQueryMatcher.find()) {
+            throw new InvalidJpqlQueryException();
+        }
+        return jpqlQueryMatcher.group(groupName);
     }
 }

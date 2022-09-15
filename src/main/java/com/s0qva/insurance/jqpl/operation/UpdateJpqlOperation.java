@@ -11,7 +11,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Map;
 
-@Component(JpqlConstant.UPDATE_JPQL_OPERATION_NAME)
+@Component(JpqlConstant.UPDATE_OPERATION_NAME)
 public class UpdateJpqlOperation extends AbstractJpqlOperation<Integer> {
     private final EntityJpqlUpdater entityJpqlUpdater;
 
@@ -24,12 +24,11 @@ public class UpdateJpqlOperation extends AbstractJpqlOperation<Integer> {
     @Override
     public Integer executeQuery(JpqlQuery query) {
         String jpqlQuery = query.getQuery();
+        Map<String, String> changes = JpqlOperationUtil.extractChanges(jpqlQuery);
         String selectJpqlQuery = JpqlOperationUtil.convertToSelectJpqlQuery(jpqlQuery);
         List<?> entitiesToUpdate = entityManager.createQuery(selectJpqlQuery).getResultList();
 
         for (Object entityToUpdate : entitiesToUpdate) {
-            Map<String, String> changes = JpqlOperationUtil.extractChanges(jpqlQuery);
-
             entityJpqlUpdater.update(entityToUpdate, changes);
             entityManager.persist(entityToUpdate);
         }
