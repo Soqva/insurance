@@ -1,4 +1,4 @@
-package com.s0qva.insurance.configuration;
+package com.s0qva.domain.configuration;
 
 import liquibase.integration.spring.SpringLiquibase;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
