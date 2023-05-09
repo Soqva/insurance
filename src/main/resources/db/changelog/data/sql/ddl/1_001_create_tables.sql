@@ -10,10 +10,7 @@ CREATE TABLE subject_types_dictionary
 CREATE TABLE subjects
 (
     id                BIGSERIAL PRIMARY KEY,
-    subject_type_code VARCHAR(64)
-        REFERENCES subject_types_dictionary (code)
-            ON DELETE CASCADE
-            ON UPDATE CASCADE
+    subject_type_code VARCHAR(64) REFERENCES subject_types_dictionary (code)
 );
 
 CREATE TABLE individual_data
@@ -62,14 +59,8 @@ CREATE TABLE addresses
 (
     subject_id        BIGINT REFERENCES subjects (id),
     attribute_id      BIGSERIAL,
-    address_type_code VARCHAR(64)
-        REFERENCES subject_types_dictionary (code)
-            ON DELETE CASCADE
-            ON UPDATE CASCADE,
-    country_code      VARCHAR(64)
-        REFERENCES subject_types_dictionary (code)
-            ON DELETE CASCADE
-            ON UPDATE CASCADE,
+    address_type_code VARCHAR(64) REFERENCES subject_types_dictionary (code),
+    country_code      VARCHAR(64) REFERENCES subject_types_dictionary (code),
     town              VARCHAR(128),
     street            VARCHAR(128),
     house             VARCHAR(16),
