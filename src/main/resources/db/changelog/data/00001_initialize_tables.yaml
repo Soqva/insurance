@@ -1,0 +1,6 @@
+databaseChangeLog:
+  - changeSet:
+      id: '1'
+      author: s0qva
+  - include:
+      file: db/changelog/data/sql/ddl/1_001_create_tables.sql

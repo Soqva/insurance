@@ -3,7 +3,9 @@ spring:
     active: development
   jpa:
     open-in-view: false
-    hibernate:
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-      ddl-auto: update
+    properties:
+      hibernate:
+        envers:
+          default_schema: aud
+          revision_field_name: revision_number
+          revision_type_field_name: revision_type

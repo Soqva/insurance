@@ -1,8 +1,20 @@
 spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/insurance
+  data-datasource:
+    jdbc-url: jdbc:postgresql://localhost:5432/insurance
     username: postgres
     password: postgres
+    schema: data
+    liquibase:
+      enabled: true
+      change-log: db/changelog/master/data/data-changelog-master.yaml
+  aud-datasource:
+    jdbc-url: jdbc:postgresql://localhost:5432/insurance
+    username: postgres
+    password: postgres
+    schema: aud
+    liquibase:
+      enabled: true
+      change-log: db/changelog/master/aud/aud-changelog-master.yaml
   jpa:
     properties:
       hibernate:

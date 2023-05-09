@@ -21,6 +21,7 @@
         <testcontainersPostgreSQL.version>1.17.3</testcontainersPostgreSQL.version>
         <lombok.version>1.18.24</lombok.version>
         <modelmapper.version>3.1.0</modelmapper.version>
+        <gson.version>2.10.1</gson.version>
     </properties>
 
     <dependencies>
@@ -64,6 +65,11 @@
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>
             <version>${modelmapper.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${gson.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
